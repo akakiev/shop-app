@@ -20,9 +20,26 @@ class "flutter_complete_guide::providers::cart.dart::Cart" {
   +int* itemCount
   +double* totalAmount
   +void addItem()
+  +void removeItem()
+  +void clear()
 }
 
 "flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_complete_guide::providers::cart.dart::Cart"
+
+class "flutter_complete_guide::providers::orders.dart::OrderItem" {
+  +String* id
+  +double* amount
+  +List<CartItem*>* products
+  +DateTime* dateTime
+}
+
+class "flutter_complete_guide::providers::orders.dart::Orders" {
+  -List<OrderItem*>* _orders
+  +List<OrderItem*>* orders
+  +void addOrder()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_complete_guide::providers::orders.dart::Orders"
 
 class "flutter_complete_guide::providers::product.dart::Product" {
   +String* id
@@ -52,6 +69,13 @@ class "flutter_complete_guide::screens::cart_screen.dart::CartScreen" {
 }
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_complete_guide::screens::cart_screen.dart::CartScreen"
+
+class "flutter_complete_guide::screens::orders_screen.dart::OrdersScreen" {
+  {static} +String* routeName
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_complete_guide::screens::orders_screen.dart::OrdersScreen"
 
 class "flutter_complete_guide::screens::products_overview_screen.dart::ProductOverviewScreen" {
   +State<ProductOverviewScreen*>* createState()
@@ -83,6 +107,12 @@ class "flutter_complete_guide::screens::product_detail_screen.dart::ProductDetai
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_complete_guide::screens::product_detail_screen.dart::ProductDetailScreen"
 
+class "flutter_complete_guide::widgets::app_drawer.dart::AppDrawer" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_complete_guide::widgets::app_drawer.dart::AppDrawer"
+
 class "flutter_complete_guide::widgets::badge.dart::Badge" {
   +Widget* child
   +String* value
@@ -93,6 +123,32 @@ class "flutter_complete_guide::widgets::badge.dart::Badge" {
 "flutter_complete_guide::widgets::badge.dart::Badge" o-- "flutter::src::widgets::framework.dart::Widget"
 "flutter_complete_guide::widgets::badge.dart::Badge" o-- "dart::ui::Color"
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_complete_guide::widgets::badge.dart::Badge"
+
+class "flutter_complete_guide::widgets::cart_item.dart::CartItem" {
+  +String* id
+  +String* productId
+  +double* price
+  +int* quantity
+  +String* title
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_complete_guide::widgets::cart_item.dart::CartItem"
+
+class "flutter_complete_guide::widgets::order_item.dart::OrderItem" {
+  +OrderItem* order
+  +_OrderItemState* createState()
+}
+
+"flutter_complete_guide::widgets::order_item.dart::OrderItem" o-- "flutter_complete_guide::providers::orders.dart::OrderItem"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_complete_guide::widgets::order_item.dart::OrderItem"
+
+class "flutter_complete_guide::widgets::order_item.dart::_OrderItemState" {
+  -bool* _expanded
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_complete_guide::widgets::order_item.dart::_OrderItemState"
 
 class "flutter_complete_guide::widgets::products_grid.dart::ProductsGrid" {
   +bool* showFavs

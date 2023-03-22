@@ -4,30 +4,25 @@ import 'package:provider/provider.dart';
 import '../providers/orders.dart' show Orders;
 import '../widgets/order_item.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   static const routeName = '/orders';
 
-//   @override
-//   State<OrdersScreen> createState() => _OrdersScreenState();
-// }
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
 
-// class _OrdersScreenState extends State<OrdersScreen> {
-//   var _isLoading = false;
-//   @override
-//   void initState() {
-  // Future.delayed(Duration.zero).then((_) async {
-  //setState(() {
-  //_isLoading = true;
-  //});
-  // Provider.of<Orders>(context, listen: false).fetchAndSetOrders().then((_) {
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // });
+class _OrdersScreenState extends State<OrdersScreen> {
+  Future _ordersFuture;
 
-  // });
-  //   super.initState();
-  // }
+  Future _obtainOrdersFuture() {
+    return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+  }
+
+  @override
+  void initState() {
+    _ordersFuture = _obtainOrdersFuture();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +33,7 @@ class OrdersScreen extends StatelessWidget {
         ),
         drawer: AppDrawer(),
         body: FutureBuilder(
-          future:
-              Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
+          future: _ordersFuture,
           builder: (ctx, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
               return Center(
